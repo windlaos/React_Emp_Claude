@@ -5,6 +5,7 @@ import useEmployeeStore from '../store/employeeStore';
 import useDepartmentStore from '../store/departmentStore';
 import { getEmployeeByEmail } from '../api/employeeApi';
 import EmployeeCard from '../components/employee/EmployeeCard';
+import Pagination from '../components/common/Pagination';
 
 const SEARCH_STATE = { IDLE: 'idle', SEARCHING: 'searching', FOUND: 'found', NOT_FOUND: 'notfound' };
 
@@ -17,15 +18,26 @@ function EmployeeListPage() {
   const [searchState, setSearchState]       = useState(SEARCH_STATE.IDLE);
   const [searchResult, setSearchResult]     = useState(null);
   const [selectedDeptId, setSelectedDeptId] = useState('');
+  const [currentPage, setCurrentPage]       = useState(1);
+  const [pageSize, setPageSize]             = useState(5);
 
   useEffect(() => {
     fetchEmployees();
     fetchDepartments();
   }, []);
 
+  // 필터 변경 시 1페이지로 초기화
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedDeptId, employees.length]);
+
   const filteredEmployees = selectedDeptId
     ? employees.filter((emp) => emp.department?.id === Number(selectedDeptId))
     : employees;
+
+  const totalPages = Math.max(1, Math.ceil(filteredEmployees.length / pageSize));
+  const safePage   = Math.min(currentPage, totalPages);
+  const paginated  = filteredEmployees.slice((safePage - 1) * pageSize, safePage * pageSize);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -67,6 +79,11 @@ function EmployeeListPage() {
     }
   };
 
+  const handlePageSizeChange = (size) => {
+    setPageSize(size);
+    setCurrentPage(1);
+  };
+
   if (isLoading) return <p className="text-center mt-10 dark:text-gray-300">로딩 중...</p>;
   if (error)     return <p className="text-red-500 text-center mt-10">{error}</p>;
 
@@ -87,7 +104,6 @@ function EmployeeListPage() {
 
       {/* 필터 + 검색 바 */}
       <div className="flex flex-col gap-3 mb-6">
-        {/* 부서 필터 */}
         <div className="flex items-center gap-3">
           <label className="text-sm font-medium text-gray-600 dark:text-gray-400 shrink-0">부서 필터</label>
           <select
@@ -117,7 +133,6 @@ function EmployeeListPage() {
           )}
         </div>
 
-        {/* 이메일 검색 */}
         <form onSubmit={handleSearch} className="flex gap-2">
           <input
             type="text"
@@ -145,7 +160,7 @@ function EmployeeListPage() {
         </form>
       </div>
 
-      {/* 검색 결과 */}
+      {/* 검색 결과 (페이지네이션 미표시) */}
       {isSearchActive && (
         <div className="mb-6">
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
@@ -162,7 +177,7 @@ function EmployeeListPage() {
         </div>
       )}
 
-      {/* 필터링된 전체 목록 */}
+      {/* 필터링된 목록 + 페이지네이션 */}
       {!isSearchActive && (
         <>
           {selectedDeptId && (
@@ -176,11 +191,21 @@ function EmployeeListPage() {
               해당 부서에 등록된 직원이 없습니다.
             </p>
           ) : (
-            <div className="flex flex-col gap-4">
-              {filteredEmployees.map((emp) => (
-                <EmployeeCard key={emp.id} employee={emp} onDelete={handleDelete} />
-              ))}
-            </div>
+            <>
+              <div className="flex flex-col gap-4">
+                {paginated.map((emp) => (
+                  <EmployeeCard key={emp.id} employee={emp} onDelete={handleDelete} />
+                ))}
+              </div>
+              <Pagination
+                currentPage={safePage}
+                totalPages={totalPages}
+                pageSize={pageSize}
+                totalItems={filteredEmployees.length}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={handlePageSizeChange}
+              />
+            </>
           )}
         </>
       )}
