@@ -46,6 +46,7 @@ function EmployeeFormPage() {
         initialData={initialData}
         onSubmit={handleSubmit}
         isEditMode={isEditMode}
+        currentEmployeeId={isEditMode ? Number(id) : null}
       />
     </div>
   );
