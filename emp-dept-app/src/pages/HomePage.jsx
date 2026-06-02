@@ -27,7 +27,7 @@ function HomePage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-8">대시보드</h1>
+      <h1 className="text-2xl font-bold mb-8 dark:text-white">대시보드</h1>
       <div className="grid grid-cols-2 gap-6">
         <StatCard
           title="총 부서 수"

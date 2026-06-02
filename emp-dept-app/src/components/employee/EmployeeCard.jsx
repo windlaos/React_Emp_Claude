@@ -4,13 +4,13 @@ function EmployeeCard({ employee, onDelete }) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-lg shadow p-4 flex justify-between items-start">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex justify-between items-start">
       <div>
-        <h2 className="text-lg font-semibold">
+        <h2 className="text-lg font-semibold dark:text-white">
           {employee.firstName} {employee.lastName}
         </h2>
-        <p className="text-gray-500 text-sm">{employee.email}</p>
-        <span className="inline-block mt-2 px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded text-xs font-medium">
+        <p className="text-gray-500 dark:text-gray-400 text-sm">{employee.email}</p>
+        <span className="inline-block mt-2 px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded text-xs font-medium">
           {employee.department?.departmentName ?? '부서 없음'}
         </span>
       </div>

@@ -4,10 +4,14 @@ function DepartmentCard({ department, onDelete }) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white rounded-lg shadow p-4 flex justify-between items-start">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex justify-between items-start">
       <div>
-        <h2 className="text-lg font-semibold text-indigo-700">{department.departmentName}</h2>
-        <p className="text-gray-500 text-sm mt-1">{department.departmentDescription}</p>
+        <h2 className="text-lg font-semibold text-indigo-700 dark:text-indigo-400">
+          {department.departmentName}
+        </h2>
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+          {department.departmentDescription}
+        </p>
       </div>
       <div className="flex gap-2 ml-4 shrink-0">
         <button

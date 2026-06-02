@@ -35,7 +35,7 @@ function DepartmentFormPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-2xl font-bold mb-6 dark:text-white">
         {isEditMode ? '부서 수정' : '부서 등록'}
       </h1>
       <DepartmentForm
