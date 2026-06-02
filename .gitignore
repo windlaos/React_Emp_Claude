@@ -8,9 +8,10 @@ backend/node_modules/
 emp-dept-app/node_modules/
 emp-dept-app/dist/
 
-# 루트 테스트 도구 (playwright)
-node_modules/
-package.json
-package-lock.json
-verify_phase13.js
-screenshots/
+# 루트 테스트 도구 (playwright) — /로 시작하면 루트 전용 매칭
+/node_modules/
+/package.json
+/package-lock.json
+/verify_phase13.js
+/verify_toast.js
+/screenshots/

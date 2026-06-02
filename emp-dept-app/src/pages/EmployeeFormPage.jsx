@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 import useEmployeeStore from '../store/employeeStore';
 import EmployeeForm from '../components/employee/EmployeeForm';
 
@@ -22,12 +23,18 @@ function EmployeeFormPage() {
   }, [id]);
 
   const handleSubmit = async (formData) => {
-    if (isEditMode) {
-      await updateEmployee(Number(id), formData);
-    } else {
-      await addEmployee(formData);
+    try {
+      if (isEditMode) {
+        await updateEmployee(Number(id), formData);
+        toast.success('직원 정보가 수정되었습니다.');
+      } else {
+        await addEmployee(formData);
+        toast.success('직원이 등록되었습니다.');
+      }
+      navigate('/employees');
+    } catch {
+      toast.error(isEditMode ? '직원 수정에 실패했습니다.' : '직원 등록에 실패했습니다.');
     }
-    navigate('/employees');
   };
 
   return (

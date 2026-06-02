@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router';
+import { Toaster } from 'react-hot-toast';
 import NavBar from './NavBar';
 
 function Layout() {
@@ -8,6 +9,7 @@ function Layout() {
       <main className="max-w-5xl mx-auto p-6">
         <Outlet />
       </main>
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
     </div>
   );
 }

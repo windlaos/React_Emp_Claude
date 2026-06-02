@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 import useEmployeeStore from '../store/employeeStore';
 import EmployeeCard from '../components/employee/EmployeeCard';
 
@@ -14,7 +15,12 @@ function EmployeeListPage() {
 
   const handleDelete = async (id) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      await deleteEmployee(id);
+      try {
+        await deleteEmployee(id);
+        toast.success('직원이 삭제되었습니다.');
+      } catch {
+        toast.error('직원 삭제에 실패했습니다.');
+      }
     }
   };
 

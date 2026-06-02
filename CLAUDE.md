@@ -40,6 +40,7 @@ npm run preview  # 빌드 결과물 미리보기
 | 라우팅 | React Router 7 | `createBrowserRouter` (import: `"react-router"` 또는 `"react-router-dom"`) |
 | 스타일 | Tailwind CSS 4 | `@tailwindcss/vite` 플러그인 방식, `tailwind.config.js` 없음 |
 | HTTP | Axios 1.16 | baseURL `http://localhost:8080/api` |
+| 토스트 알림 | react-hot-toast 2.6 | `<Toaster />` → `Layout.jsx` 전역 마운트 |
 
 ---
 

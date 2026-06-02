@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 import useDepartmentStore from '../store/departmentStore';
 import DepartmentCard from '../components/department/DepartmentCard';
 
@@ -14,7 +15,12 @@ function DepartmentListPage() {
 
   const handleDelete = async (id) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      await deleteDepartment(id);
+      try {
+        await deleteDepartment(id);
+        toast.success('부서가 삭제되었습니다.');
+      } catch {
+        toast.error('부서 삭제에 실패했습니다.');
+      }
     }
   };
 
