@@ -12,6 +12,5 @@ emp-dept-app/dist/
 /node_modules/
 /package.json
 /package-lock.json
-/verify_phase13.js
-/verify_toast.js
+/verify_*.js
 /screenshots/
