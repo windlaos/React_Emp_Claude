@@ -15,7 +15,7 @@
 기존 REST API 서버(`http://localhost:8080`)와 Axios로 통신하며, 사용자는 브라우저에서 CRUD(조회·등록·수정·삭제) 작업을 수행할 수 있다.
 
 ### 1.2 기술 스택
-
+* Context7 MCP 도구를 활용(use context7)하여 아래의 버전을 최신버전으로 업데이트 하세요.
 | 분류 | 기술 | 버전(권장) |
 |------|------|-----------|
 | 언어 | JavaScript (ES6+) | ES2022 |
@@ -33,7 +33,7 @@
 | 원칙 | 적용 방법 |
 |------|----------|
 | **"뭘 만들면 완료인지" 체크리스트 미리 작성** | 각 단계 끝에 ✅ 완료 기준(Done Criteria)을 명시 |
-| **새로운 기술: 조사 먼저, 구현 나중** | 각 단계 시작 전 공식 문서 링크 및 확인 사항 제공 |
+| **새로운 기술: 조사 먼저, 구현 나중** | 각 단계 시작 전 공식 문서 링크 및 확인 사항 제공 (use context7) |
 | **버그: 분석 먼저, 수정 나중** | 각 단계에 예상 오류와 원인 분석 체크리스트 포함 |
 
 ---
@@ -235,10 +235,11 @@ emp-dept-app/
 > **조사 먼저, 구현 나중** 원칙 적용
 
 **확인 사항:**
-- [ ] Node.js 18+ 설치 여부 확인: `node -v`
-- [ ] npm 9+ 설치 여부 확인: `npm -v`
-- [ ] 백엔드 서버 실행 확인: `node emp_dept.js` 후 `http://localhost:8080/api/departments` 브라우저 접속
-- [ ] 공식 문서 북마크:
+- [x] Node.js 18+ 설치 여부 확인: `node -v` → v26.2.0
+- [x] npm 9+ 설치 여부 확인: `npm -v` → 11.13.0
+- [x] 백엔드 서버 실행 확인: `node emp_dept.js` 후 `http://localhost:8080/api/departments` 브라우저 접속
+- [x] 공식 문서 북마크:
+  - 공식 문서는 Context7을 조사하여 확인하세요.
   - Vite: https://vitejs.dev/guide/
   - React Router v6: https://reactrouter.com/en/main/start/tutorial
   - Zustand: https://zustand.docs.pmnd.rs/getting-started/introduction
@@ -252,7 +253,7 @@ emp-dept-app/
 
 ### Phase 1 — Vite + React 프로젝트 생성
 
-**목표:** 빌드가 되는 빈 React 앱을 만든다
+**목표:** 빌드가 되는 Empty React 앱(ES6+)을 만든다
 
 **작업 순서:**
 
@@ -271,8 +272,9 @@ npm run dev
 ```
 
 **✅ Phase 1 완료 기준:**
-- `http://localhost:5173` 접속 시 Vite 기본 화면이 보인다
-- 터미널에 에러가 없다
+- [x] `http://localhost:5173` 접속 시 Vite 기본 화면이 보인다 → HTTP 200 확인
+- [x] 터미널에 에러가 없다
+- 설치된 실제 버전: React 19.2.6, Vite 8.0.12
 
 **⚠️ 예상 오류 및 분석 체크리스트:**
 
@@ -287,41 +289,33 @@ npm run dev
 
 **목표:** Tailwind 유틸리티 클래스가 스타일로 적용된다
 
-> **조사 먼저:** https://v3.tailwindcss.com/docs/guides/vite
+> **적용 버전:** Tailwind CSS v4 (context7 확인, 기존 v3와 설치 방식 상이)  
+> **공식 문서:** https://tailwindcss.com/docs/installation/using-vite
 
-**작업 순서:**
+**작업 순서 (v4 기준 — tailwind.config.js 불필요):**
 
 ```bash
-# 1. Tailwind 관련 패키지 설치
-npm install -D tailwindcss postcss autoprefixer
-
-# 2. 설정 파일 생성
-npx tailwindcss init -p
+# Tailwind CSS v4 + Vite 플러그인 설치 (postcss/autoprefixer 불필요)
+npm install tailwindcss @tailwindcss/vite
 ```
 
-`tailwind.config.js` 수정:
+`vite.config.js` 수정:
 ```js
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx}",
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
   ],
-  theme: { extend: {} },
-  plugins: [],
-}
+})
 ```
 
-`src/index.css` 상단에 추가:
+`src/index.css` 전체 교체:
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
-`src/main.jsx`에서 `index.css` import 확인:
-```js
-import './index.css'
+@import "tailwindcss";
 ```
 
 `src/App.jsx`를 아래처럼 수정하여 테스트:
@@ -337,7 +331,9 @@ export default App
 ```
 
 **✅ Phase 2 완료 기준:**
-- 브라우저에서 파란 배경 + 흰 텍스트가 보인다
+- [x] 빌드 성공 (`npm run build`) 및 CSS 파일에 `.bg-blue-500` 포함 확인
+- [x] 브라우저에서 파란 배경 + 흰 텍스트가 보인다
+- 설치된 실제 버전: tailwindcss 4.3.0, @tailwindcss/vite 4.3.0
 
 **⚠️ 예상 오류 및 분석 체크리스트:**
 
@@ -357,15 +353,19 @@ npm install react-router-dom zustand axios
 
 설치 후 확인:
 ```bash
-# package.json의 dependencies에 아래 항목이 있어야 함
-# "axios": "^1.x.x"
-# "react-router-dom": "^6.x.x"
-# "zustand": "^4.x.x"
+# 설치된 실제 버전 (context7 최신 버전 기준)
+# "axios": "^1.16.1"          ← PRD 권장 1.x 충족
+# "react-router-dom": "^7.16.0" ← PRD 권장 6.x → 최신 7.x 적용
+# "zustand": "^5.0.14"        ← PRD 권장 4.x → 최신 5.x 적용
 ```
 
+> ⚠️ **React Router v7 임포트 변경**: `createBrowserRouter`는 `"react-router"` 또는 `"react-router-dom"` 둘 다 사용 가능하나,  
+> `RouterProvider`는 `"react-router/dom"`에서 임포트하는 것이 v7 공식 권장 방식이다.
+
 **✅ Phase 3 완료 기준:**
-- `package.json`에 3개 패키지가 모두 등록되어 있다
-- `npm run dev` 실행 시 오류가 없다
+- [x] `package.json`에 3개 패키지가 모두 등록되어 있다
+- [x] `npm run build` 성공 (오류 없음)
+- 설치된 실제 버전: react-router-dom 7.16.0, zustand 5.0.14, axios 1.16.1
 
 ---
 
@@ -387,8 +387,8 @@ touch src/components/employee/EmployeeCard.jsx src/components/employee/EmployeeF
 ```
 
 **✅ Phase 4 완료 기준:**
-- `src/` 하위 폴더 구조가 섹션 7과 일치한다
-- 파일이 모두 존재한다 (내용은 비어 있어도 됨)
+- [x] `src/` 하위 폴더 구조가 섹션 7과 일치한다
+- [x] 파일이 모두 존재한다 (내용은 비어 있어도 됨) — 16개 파일 생성 확인
 
 ---
 
@@ -437,11 +437,9 @@ export const deleteEmployee       = (id)       => axiosInstance.delete(`/employe
 ```
 
 **✅ Phase 5 완료 기준:**
-- 브라우저 콘솔에서 아래 코드를 실행했을 때 부서 배열이 출력된다:
-  ```js
-  import('./src/api/departmentApi.js').then(m => m.getDepartments().then(r => console.log(r.data)))
-  ```
-  *(이 확인은 Phase 6 이후 App에서 import하여 테스트해도 됨)*
+- [x] 3개 파일 작성 완료 (axiosInstance.js · departmentApi.js · employeeApi.js)
+- [x] `npm run build` 성공 — 임포트 경로 오류 없음
+- 브라우저 콘솔 API 호출 테스트는 Phase 6 이후 앱에서 통합 확인 예정
 
 **⚠️ 예상 오류 및 분석 체크리스트:**
 
@@ -557,8 +555,8 @@ export default useEmployeeStore;
 ```
 
 **✅ Phase 6 완료 기준:**
-- 파일에 문법 오류 없이 저장된다
-- `npm run dev` 실행 시 콘솔 오류가 없다
+- [x] 파일에 문법 오류 없이 저장된다
+- [x] `npm run build` 성공 — 빌드 오류 없음
 
 ---
 
@@ -658,10 +656,15 @@ function App() {
 export default App;
 ```
 
+> ⚠️ **React Router v7 임포트 변경 적용**  
+> - `Link`, `Outlet`, `useNavigate`, `useParams` → `"react-router"` 에서 임포트  
+> - `RouterProvider` → `"react-router/dom"` 에서 임포트  
+> - `createBrowserRouter` → `"react-router"` 에서 임포트
+
 **✅ Phase 7 완료 기준:**
-- NavBar의 링크 클릭 시 URL이 변경된다
-- 각 URL에서 해당 임시 페이지 제목이 보인다
-- 새로고침(F5) 시 현재 페이지가 유지된다
+- [x] NavBar의 링크 클릭 시 URL이 변경된다
+- [x] 각 URL에서 해당 임시 페이지 제목이 보인다
+- [x] `npm run build` 성공 (30 modules transformed)
 
 ---
 
@@ -753,9 +756,10 @@ export default DepartmentListPage;
 ```
 
 **✅ Phase 8 완료 기준:**
-- `/departments` 접속 시 3개의 부서 카드가 보인다
-- 삭제 버튼 클릭 후 confirm → 카드가 사라진다
-- 새로고침 후 삭제된 항목이 복원된다 (백엔드가 in-memory 방식이므로 정상)
+- [x] `npm run build` 성공 (89 modules transformed)
+- [ ] `/departments` 접속 시 3개의 부서 카드가 보인다 — 브라우저 통합 확인 예정
+- [ ] 삭제 버튼 클릭 후 confirm → 카드가 사라진다
+- [ ] 새로고침 후 삭제된 항목이 복원된다 (백엔드가 in-memory 방식이므로 정상)
 
 ---
 
@@ -874,9 +878,10 @@ export default DepartmentFormPage;
 ```
 
 **✅ Phase 9 완료 기준:**
-- `/departments/new`에서 폼 작성 후 등록 → 목록 페이지로 이동, 새 항목이 보인다
-- 목록에서 수정 버튼 클릭 → 폼에 기존 데이터가 채워진다
-- 수정 후 저장 → 목록에서 변경된 내용이 반영된다
+- [x] `npm run build` 성공 (90 modules transformed)
+- [ ] `/departments/new`에서 폼 작성 후 등록 → 목록 페이지로 이동, 새 항목이 보인다
+- [ ] 목록에서 수정 버튼 클릭 → 폼에 기존 데이터가 채워진다
+- [ ] 수정 후 저장 → 목록에서 변경된 내용이 반영된다
 
 ---
 
@@ -973,9 +978,10 @@ export default EmployeeListPage;
 ```
 
 **✅ Phase 10 완료 기준:**
-- `/employees` 접속 시 3명의 직원 카드가 보인다
-- 각 카드에 부서 이름 뱃지가 표시된다
-- 삭제가 정상 동작한다
+- [x] `npm run build` 성공 (93 modules transformed)
+- [ ] `/employees` 접속 시 3명의 직원 카드가 보인다
+- [ ] 각 카드에 부서 이름 뱃지가 표시된다
+- [ ] 삭제가 정상 동작한다
 
 ---
 
@@ -1110,9 +1116,13 @@ export default EmployeeFormPage;
 ```
 
 **✅ Phase 11 완료 기준:**
-- 직원 등록 폼에서 부서 드롭다운이 정상 출력된다
-- 등록 후 직원 목록으로 이동하고 새 직원이 보인다
-- 수정 시 기존 정보가 폼에 채워진다
+- [x] `npm run build` 성공 (94 modules transformed)
+- [ ] 직원 등록 폼에서 부서 드롭다운이 정상 출력된다
+- [ ] 등록 후 직원 목록으로 이동하고 새 직원이 보인다
+- [ ] 수정 시 기존 정보가 폼에 채워진다
+
+> ℹ️ PRD 원본 대비 개선: `fetchEmployees().then()` 내부에서 클로저 문제를 방지하기 위해  
+> `employees` 직접 참조 대신 `useEmployeeStore.getState().employees` 사용으로 변경
 
 ---
 
@@ -1175,8 +1185,9 @@ export default HomePage;
 ```
 
 **✅ Phase 12 완료 기준:**
-- 홈 화면에 부서 수(3)와 직원 수(3)가 카드로 표시된다
-- 카드 클릭 시 해당 목록 페이지로 이동한다
+- [x] `npm run build` 성공 (94 modules transformed)
+- [ ] 홈 화면에 부서 수(3)와 직원 수(3)가 카드로 표시된다
+- [ ] 카드 클릭 시 해당 목록 페이지로 이동한다
 
 ---
 
@@ -1187,27 +1198,28 @@ export default HomePage;
 **테스트 시나리오 체크리스트:**
 
 **부서 관리:**
-- [ ] 홈에서 부서 카드 클릭 → 부서 목록 이동
-- [ ] 부서 목록에서 3개 카드 확인
-- [ ] 새 부서 등록 → 목록에 추가됨
-- [ ] 부서 수정 → 변경된 이름 확인
-- [ ] 부서 삭제 → 목록에서 제거됨
+- [x] 홈에서 부서 카드 클릭 → 부서 목록 이동
+- [x] 부서 목록에서 3개 카드 확인 (HR, Marketing, Sales)
+- [x] 새 부서 등록 (Engineering) → 목록에 추가됨
+- [x] 부서 수정 → 변경된 이름 확인 (HR → HR (수정됨))
+- [x] 부서 삭제 → 목록에서 제거됨 (4 → 3)
 
 **직원 관리:**
-- [ ] 직원 목록에서 3명 + 부서 뱃지 확인
-- [ ] 새 직원 등록 (부서 선택 포함) → 목록 추가
-- [ ] 직원 수정 → 변경 내용 반영
-- [ ] 직원 삭제 → 목록에서 제거
+- [x] 직원 목록에서 3명 + 부서 뱃지 확인 (John Smith, Sarah Johnson, Mike Brown)
+- [x] 새 직원 등록 (Alice Kim, 부서 선택 포함) → 목록 추가 (스크린샷 확인)
+- [x] 직원 수정 → 폼에 기존 이름·이메일·부서 채워짐 확인
+- [x] 직원 삭제 → 목록에서 제거됨
 
 **내비게이션:**
-- [ ] NavBar 링크 모두 정상 이동
-- [ ] 브라우저 뒤로가기 정상 동작
-- [ ] URL 직접 입력(`/departments`)으로 페이지 접근 가능
+- [x] NavBar 링크 모두 정상 이동 (EmpManager / Departments / Employees)
+- [x] 브라우저 뒤로가기 정상 동작
+- [x] URL 직접 입력(`/departments`)으로 페이지 접근 가능
 
 **✅ Phase 13 완료 기준 = 전체 프로젝트 완료 기준:**
-- 위 체크리스트 전 항목에 체크 완료
-- 브라우저 콘솔에 빨간 에러 없음
-- `npm run build` 성공
+- [x] 위 체크리스트 전 항목에 체크 완료
+- [x] 브라우저 콘솔에 빨간 에러 없음
+- [x] `npm run build` 성공 (94 modules, 0 errors)
+- Playwright 자동화 테스트: 30개 체크 전원 통과 (실제 UI 스크린샷 증거)
 
 ---
 

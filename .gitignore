@@ -1,4 +1,16 @@
 .mcp.json
 .claude/
 
+# 백엔드
 backend/node_modules/
+
+# 프론트엔드
+emp-dept-app/node_modules/
+emp-dept-app/dist/
+
+# 루트 테스트 도구 (playwright)
+node_modules/
+package.json
+package-lock.json
+verify_phase13.js
+screenshots/
